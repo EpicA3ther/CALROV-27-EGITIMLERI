@@ -1,5 +1,6 @@
 import msvcrt
 import logging
+
 logger = logging.getLogger("Calrov27")
 logger.setLevel(logging.INFO)
 
@@ -18,24 +19,36 @@ print("Hoşgeldiniz, belirli komutları çalıştırmak için aşağıdaki rehbe
 MitArmoderNicht = "Disarmed"
 Xkoordinat = 0
 Ykoordinat = 0
-Depthhold = False
-Stabilize = False
+Mod = "Etkin mod yok"
 
 while(1):
     girdi = Tusalma()
+    
     match girdi:
         case "W" | "w":
-            logger.info("İleri gidildi.")
-            Ykoordinat += 1
+            if MitArmoderNicht == "Armed":
+                logger.info("İleri gidildi.")
+                Ykoordinat += 1
+            else:
+                logger.warning("Aracı ilk önce Armed moduna geçiriniz.")
         case "A" | "a":
-            logger.info("Sola gidildi.")
-            Xkoordinat -=1
+            if MitArmoderNicht == "Armed":
+                logger.info("Sola gidildi.")
+                Xkoordinat -=1
+            else:
+                logger.warning("Aracı ilk önce Armed moduna geçiriniz.")
         case "S" | "s":
-            logger.info("Geri gidildi.")
-            Xkoordinat -=1
+            if MitArmoderNicht == "Armed":
+                logger.info("Geri gidildi.")
+                Xkoordinat -=1
+            else:
+                logger.warning("Aracı ilk önce Armed moduna geçiriniz.")
         case "D" | "d":
-            logger.info("Sağa gidildi")
-            Xkoordinat +=1
+            if MitArmoderNicht == "Armed":
+                logger.info("Sağa gidildi")
+                Xkoordinat +=1
+            else:
+                logger.warning("Aracı ilk önce Armed moduna geçiriniz.") 
         case "Z" | "z":
                 if MitArmoderNicht == "Disarmed":
                     logger.info("Armed moduna geçildi.")
@@ -47,23 +60,23 @@ while(1):
                     logger.info("Araç zaten Disarmed modunda.")
                 else: 
                     logger.info("Disarmed moduna geçildi") 
-                    MitArmoderNicht = "Armed" 
+                    MitArmoderNicht = "Disarmed" 
         case "C" | "c":
-                if Stabilize == False:
+                if Mod != "Stabilize":
                     logger.info("Stabilize moduna geçildi.")
-                    Stabilize = True
+                    Mod = "Stabilize"
                 else: 
                     logger.info("Stabilize modu devre dışı bırakıldı.") 
-                    Stabilize = False       
+                    Mod = "Etkin mod yok"       
         case "H" | "h":
-                if Depthhold == False:
+                if Mod != "Depth Hold":
                     logger.info("Depth Hold moduna geçildi.")
-                    Depthhold = True
+                    Mod = "Depth Hold"
                 else: 
                     logger.info("Depth Hold modu devre dışı bırakıldı.") 
-                    Depthhold = False                    
+                    Mod = "Etkin mod yok"                 
         case "V" | "v":
-              logger.info("=" * 35 + f"\nKoordinat = {Xkoordinat},{Ykoordinat}\n{MitArmoderNicht}\nStabilize Modu = {Stabilize}\nDepth Hold Modu = {Depthhold}\n" + "=" * 35)
+              logger.info("=" * 35 + f"\nDurum = Çalışıyor\nKoordinat = {Xkoordinat},{Ykoordinat}\n{MitArmoderNicht}\nMod = {Mod}\n" + "=" * 35)
         case "Q" | "q":
               logger.info("Program başarılı bir şekilde sonlandırılıyor")
               break
